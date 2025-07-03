@@ -12,11 +12,65 @@ Q.What is difference between a class component and functional component with hoo
 ans :
 
 CLASS COMPONENT : require the use Es6 class - state is handle using "this.state" and updated using tht this.setState();
+
+
+React class component got through 3 main phase:
+1. mounting - component is being created and inserted into the DOM.
+2. Updating - Component is being re-rendered due to changes(in  props or state)
+3. Unmounting  - component is removed from the DOM.
+
+
+✅ 1. Mounting Phase
+ - constructor(props)  - called when the component is created.
+ -  static getDerivedStateFromProps(props,state):Runs before every render (initial + update).
+ - render() - only required method and return jsx.
+ - componentDidMount() - called once, after component is mounted to DOM. ideal for API calls, 
+
+
+🔄 2. Updating Phase
+🔹 static getDerivedStateFromProps - called on every render.
+ - ShouldComponentUpdate(nextProps, nextState) 
+    decice if a re-render is needed.
+ - render again if update happens.
+ - componetdidUpdate: runs after updates are flushed to DOM.
+
+
+❌ 3. Unmounting Phase
+
+  componentWillMount() :called before removal from DOM(). 
+  ideal for clean up 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 life cycle methods are:
 render(),
 componentDidMount(),
 componentDidUpdate(),
 componentWillUnmount();
+
+
+
 
 <!--
 
@@ -66,7 +120,9 @@ A props is data that transfer from parent component to child component. they are
 
 5##########################################################Q.
 what are the rules of hooks in react.
-and: 1. Hooks should only be called at the top level of you component. 2. Hooks should only call from the react funciton not be called within loops, condition or nested function.
+1. Hooks should only be called at the top level of you component. 
+2. Hooks should only call from the react funciton not be called within loops, condition or nested function.
+
 
 ###########################################################Q.How do you manage side effects in React functional components with hooks?
 ans: The use Effect hook is used in react functional component to manage side effect.
@@ -482,3 +538,249 @@ how it work -
 
 When the user types in the input field, React triggers a synthetic event for the onChange handler. This synthetic event ensures the event behaves the same, regardless of the browser.
 The handleInputChange function is called with this event, and you can access the value (event.target.value) to update the state (name).
+
+
+######################################################
+code splitting:
+Code splitting means splitting your javascript bundle into smaller chunks so that the browser only load what's needed initially.
+
+
+Instead of loading everything at once, it load parts on demand -> faster initial load.
+
+
+<!-- 
+
+const BigComponent= () =>{
+   return   <div>This is a big component!</div>
+}
+
+
+import Reac, {suspence,lazy} from "react"
+
+const BigComponent = lazy(()=>import('./BigComponent'));
+
+function App(){
+  return (
+     <div>
+     <h1> My App</h1>
+     <Suspense fallback={<p>Loading....</p>}>
+         <BigComponent>
+     </Suspense>
+     </div>
+  )
+}
+ -->
+
+
+<!-- pratice  of context API: -->
+<!-- 
+import {createContext,useState} from "react"
+
+export const ThemeContext = createContext();
+
+
+const App =()=>{
+
+  const [theme,setTheme] = useState('light');
+    
+  const ToogleTheme= ()=>{
+    setTheme(prev=>(prev === 'light' ? 'dark':'light'))
+  }
+
+  return (
+  <ThemeContext.Provider value={{theme,toogleTheme}>
+       {children}
+   </ThemeContext.Provider>
+  )
+} 
+
+const MyComponent = ()=>{
+
+  const {theme, toogleTheme} = useContext(ThemeContext);
+
+  return(
+     <div>
+    
+     </div>
+  )
+
+
+}
+
+
+ -->
+
+
+ <!-- 
+ Redux is a statemanagement tool that is used to manage the global state acros the apps . expecically when state is shared across many components.
+
+
+ why Redux?
+
+ Avoid props drilling:
+
+
+ Store  : Hold the entire appp state (like the global object)
+ action : it is plain javascript object that describe what happends
+
+ reducer : functions that update the state based on the action.
+
+ dispatch: Used to send an action to the reducer. 
+
+
+
+actions.js
+export const increment = ()=>({type:'INCREMENT'})
+export const decrement = () => ({ type: 'DECREMENT' });
+
+const initial_state = {count:0};
+
+
+export const counterReducer = (stat = InitialState,action)=>{
+   
+   switch(action.type){
+   case  "INCREMENT": return {count: state.count +1};
+   case  "DECREMENT" : return {count:state.count -1};
+   default: return state;
+   }
+}
+
+
+store.js
+
+
+import {createStore}  from "reducder"
+import {counterReuder} from "./reducer"
+
+export const store = createSotre(counterReducer);
+
+
+
+import React from "react"
+import {Provider , useSelector, useDispatch} from 'react-redux'
+
+import {store} from "./store"
+
+import {increment, decrement} from "./actions";
+
+
+const Counter = () =>{
+
+const counter = useSelector(state =>state.count);
+
+const dispatch = useDispatch();
+
+
+return (
+   <div>
+
+   </div>
+)
+
+
+}
+
+
+
+
+
+  -->
+  Additional React Interview Questions
+What is Virtual DOM and how does it work?
+
+Explain the concept of Virtual DOM and how React uses it for efficient rendering
+
+What are keys in React and why are they important?
+
+Discuss the purpose of keys in lists and their impact on performance
+
+What is JSX and how does it work?
+
+Explain what JSX is, how it's transformed, and why React uses it
+
+What are Higher-Order Components (HOCs)?
+
+Define HOCs and explain their use cases with examples
+
+What is the difference between Element and Component in React?
+
+Clarify the distinction between React elements and components
+
+What are Pure Components in React?
+
+Explain Pure Components and when to use them over regular components
+
+What is the significance of the key prop when rendering lists?
+
+Discuss why keys are needed and what happens when they're missing or duplicated
+
+What are Error Boundaries in React?
+
+Explain how to implement error boundaries and their importance
+
+What is Strict Mode in React?
+
+Describe what Strict Mode does and why it's useful during development
+
+What is the difference between Shadow DOM and Virtual DOM?
+
+Compare these two concepts and their respective purposes
+
+What is the difference between state and props?
+
+While you have this covered, consider adding more about immutability and when to use each
+
+What are React portals?
+
+Explain what portals are and when they should be used
+
+What is the Context API used for?
+
+You've covered this partially, but expand on when to use Context vs Redux
+
+What is React Fiber?
+
+Explain what React Fiber is and how it improves rendering performance
+
+How does React handle events?
+
+Explain React's synthetic event system and event pooling
+
+What are the different phases of component lifecycle in React 16+?
+
+Focus on the newer lifecycle methods and deprecated ones
+
+What is the difference between client-side and server-side rendering?
+
+Compare CSR and SSR approaches in React applications
+
+What is Redux Middleware?
+
+Explain middleware in Redux and common examples like redux-thunk or redux-saga
+
+What is React.lazy() and Suspense?
+
+Explain how they work together for code-splitting
+
+What are the differences between React and other frameworks like Angular or Vue?
+
+Compare React's approach with other popular frameworks
+
+How do you optimize performance in a React application?
+
+Discuss various techniques like memoization, virtualization, code splitting, etc.
+
+What is the difference between useState and useReducer?
+
+Compare these two state management hooks and when to use each
+
+What is the difference between controlled and uncontrolled components?
+
+You have this covered but could expand on best practices
+
+What is prop drilling and how can you avoid it?
+
+You've mentioned this but could expand on solutions like Context API and Redux
+
+What is the useImperativeHandle hook?
+  

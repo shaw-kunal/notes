@@ -1,5 +1,5 @@
 JavaScript:
-Data Types & Structures:
+Data Types & Structures:  
 
 Primitive vs Reference types (strings, numbers, objects, arrays).
 Mutability and immutability.
