@@ -186,6 +186,12 @@ A feature that prevents accidental termination (deletion) of your EC2 instance.
 
 
 # Aws ec2 Placement Group:26
+A placement group in AWS is a logical grouping of EC2 instances within a single Availability Zone that enables low-latency, high network throughput interactions between instances.
+- **Cluster Placement Group**: This type groups instances in a low-latency network, which is ideal for applications that require high performance and low latency, such as high-performance computing (HPC) applications.
+ However, cluster placement groups cannot span multiple Availability Zones, and if the Availability Zone fails, all instances in the group fail.
+- **Partition Placement Group**: This type distributes instances across different partitions within an Availability Zone. Each partition represents a rack in AWS, and instances in one partition do not share the same hardware with instances in another partition. This provides high availability and is suitable for large distributed and replicated workloads.
+
+- **Spread Placement Group**: This type places instances on distinct hardware across different Availability Zones, which reduces the risk of simultaneous failures. It is suitable for applications that require maximum high availability.
 
 # Aws Tenancy: day 27
 Determine how the physical hardware on which your instances run is shared with other AWS accounts.
@@ -538,12 +544,354 @@ LifeCycle Management-
 
   
 
+  ##  do later - 
+
+
+
+# AWS FSx for Windows File Server: Day - 52
+
+## Overview
+- **Amazon FSx for Windows File Server** is a fully managed file storage service built on Windows Server.
+- Designed for applications that require file storage with the **SMB protocol** and **Windows NTFS** features.
+
+## Key Features
+- **Fully Managed**: Automated backups, patching, and monitoring.
+- **Native Windows Compatibility**: Supports Active Directory (AD), DFS Namespaces, Access Control Lists (ACLs).
+- **Scalable Storage**: From 32 GiB to 64 TiB per file system.
+- **High Performance**: SSD and HDD storage options, high throughput, and low latency.
+
+## Use Cases
+- Home directories
+- Lift-and-shift Windows applications
+- Microsoft SQL Server databases
+- Enterprise applications requiring shared storage
+
+## Integration
+- Integrates with **AWS Directory Service**, **Amazon EC2**, **VPC**, and **CloudWatch**.
+
+## Security
+- **Encryption**: In-transit and at-rest using AWS KMS.
+- **Access Control**: Integrates with AD for user authentication and permissions.
+
+## Pricing
+- Based on storage size, throughput capacity, and backup requirements.
+
+
+# Active Directory (AD) - Basic Concepts
+
+## What is Active Directory?
+Active Directory (AD) is a **directory service** developed by **Microsoft** for **Windows domain networks**. It helps manage and store information about network resources and application-specific data from a centralized location.
+or It is the authentication service for windows.
+## Core Purpose
+- Acts as a **centralized database** for user accounts, computers, printers, and more.
+- Provides **authentication** and **authorization** services.
+
+## Key Components
+
+### 1. **Domain**
+- Logical grouping of network objects (users, devices).
+- Managed by a **Domain Controller (DC)**.
+
+### 2. **Domain Controller (DC)**
+- A server that runs Active Directory services.
+- Handles login requests, authentication, and directory lookups.
+
+### 3. **Organizational Unit (OU)**
+- Containers within a domain to organize users, groups, and computers.
+- Used for applying **Group Policies**.
+
+### 4. **Group Policy**
+- Enables centralized configuration and management of user and computer settings.
+- Applied through GPOs (Group Policy Objects).
+
+### 5. **LDAP**
+- AD uses **Lightweight Directory Access Protocol** to read/write directory information.
+
+### 6. **Kerberos**
+- Default authentication protocol used by AD for secure login.
+
+## Benefits
+- **Centralized management** of users and computers.
+- **Enhanced security** through policies and permissions.
+- **Scalable and flexible** for enterprises.
+
+## Analogy
+Active Directory is like a company's digital phonebook:
+- Every employee (user) is listed.
+- Their roles, departments, and access levels are defined.
+- Admins can control who can see or do what from one place.
+![alt text](./assests/activeDirectory.png)
+
+
+# Day - 54  & 55 (practical)
+
+
+# 🧠 Amazon FSx for Lustre – Notes  Day 56
+
+## 🔹 What is FSx for Lustre?
+- Fully managed **parallel file system** for high-performance computing (HPC).
+- Integrates with **Amazon S3** – enables high-speed processing of S3 data.
+- Based on **Lustre**, a widely-used open-source file system in HPC.
+
+---
+
+## 🔹 Key Features
+- ✅ **High Throughput & Low Latency**:
+  - Ideal for machine learning, big data, video rendering, and financial modeling.
+- 🔁 **S3 Integration**:
+  - Automatically imports S3 objects into Lustre file system.
+  - Can export results back to S3.
+- 🚀 **Performance**:
+  - Up to **100s of GBps throughput**, millions of IOPS.
+- 🛠️ **Fully Managed**:
+  - No need to handle provisioning, patching, or backups.
+- 📁 **POSIX-compliant file system**:
+  - Native support for Linux-based workloads.
+
+---
+
+## 🔹 Use Cases
+- Machine Learning training pipelines
+- Genomics, seismic analysis
+- Media processing (render farms)
+- Financial simulations
+- Large-scale log processing
+
+---
+
+## 🔹 Deployment & Access
+- Can be deployed in VPC like other FSx services.
+- Access via EC2 instances or on-premise systems (via Direct Connect/VPN).
+- Supports encryption, VPC security groups, IAM roles.
+
+---
+
+## 🔹 Storage Options
+- **Scratch file systems**: temporary storage, no replication.
+- **Persistent file systems**: long-term storage with replication.
+
+---
+
+## 🔹 Benefits
+- Faster processing of large datasets.
+- Pay only for what you use.
+- Scales to petabytes.
+- Easy integration with S3.
+
+---
+
+## 🔹 Limitations
+- Mainly optimized for **Linux**.
+- No native Windows support (use FSx for Windows File Server instead).
+
+
+![alt text](./assests/fsx_luster.png)
+
+
+**################################################**
+
+# ☁️ Amazon VPC (Virtual Private Cloud) – Notes DAY:57
+
+## 🔹 What is VPC?
+- A logically isolated section of AWS cloud.
+- You define the IP address range, subnets, route tables, gateways, etc.
+- Acts like your own **private data center** on AWS.
+
+---
+
+## 🔹 Key Components
+
+### ✅ CIDR Block
+- IP range for your VPC (e.g., `10.0.0.0/16`)
+- Max: `/16` (65,536 IPs), Min: `/28` (16 IPs)
+
+### ✅ Subnets
+- Divide your VPC into **public** and **private** subnets.
+- **Public Subnet**: Has route to Internet Gateway.
+- **Private Subnet**: No direct internet access.
+
+### ✅ Route Tables
+- Control traffic routing within VPC.
+- Public subnets have a route to Internet Gateway (IGW).
+- Private subnets use NAT Gateway/Instance for internet-bound traffic.
+
+### ✅ Internet Gateway (IGW)
+- Enables internet access for instances in **public** subnet.
+
+### ✅ NAT Gateway / NAT Instance
+- Allows instances in **private** subnet to access the internet (outbound only).
+- NAT Gateway is managed, scalable & preferred.
+
+### ✅ Security Group
+- Virtual firewall for EC2 instances.
+- **Stateful**: Return traffic is automatically allowed.
+
+### ✅ Network ACL (NACL)
+- Firewall at **subnet level**.
+- **Stateless**: You must allow both inbound and outbound rules.
+
+### ✅ VPC Peering
+- Connect two VPCs privately.
+- Must update route tables to allow communication.
+
+### ✅ VPC Endpoints
+- **Interface Endpoint**: Connect to AWS services via private IP.
+- **Gateway Endpoint**: For S3 & DynamoDB.
+
+---
+
+## 🔹 VPC Design Best Practices
+- Use multiple Availability Zones (AZs) for high availability.
+- Separate public/private workloads into respective subnets.
+- Use NACLs for broad access control; SGs for instance-level control.
+- Enable **Flow Logs** for monitoring VPC traffic.
+
+---
+
+## 🔹 Use Cases
+- Host secure web applications.
+- Deploy multi-tier architectures (web + app + DB).
+- Create hybrid cloud via VPN or AWS Direct Connect.
+
+## 5 step to create VPC:
+![alt text](./assests/5stepprocess.png)
+1. Give VPC name
+2. Add assign private IP
+3. Add subnet
+4. 
+
+
+
+![alt text](./assests/vpc-subnet.png)
+* Important-
+We can create any number of subet with in AZ.
+if We have 3 AZ in a region, then we need to create atleast 3 subnet for each AZ.
+
+CIDR block issue:  we can not assign same CIDR block in other VPC.
+
+solution -1 : Edit VPC and add a new IP4 CIDR and use it.
+limitation: But we can add atmost 5 CIDR block.
+
+solution - 2 : 
+
+We need to  generate the subnet for for Private IP block.
+Eg:- we need to two different ip block then.
+we have a CIDR block: 192.168.0.0/24
+
+we need two subnet then 
+
+192.168.0.0/25
+192.168.0.128/25
+
+
+# Day-61: How to create AWS Public Subnet , Private Subnet?
+
+public Subnet: A subnet that has a route to the internet gateway , allowinng resources inside it to send receive traffic from te internet directly.
+
+
+Private Subnet: A subnet that does not have a route to te internet GateWay. Resources in it can only access the internet through a NAT Gte or Basiton host and are not Directlyyy accessible from thhe internet.
+
+![alt text](./assests/public_private_subnet.png)
+
+
+
+# Day -62: AWS VPC (Virtual Private Cloud)- Internet Gateway (IGW) | What is an Internet Gateway?
+
+
+## What is an Internet Gateway?
+An **Internet Gateway (IGW)** is a horizontally scaled, redundant, and highly available **VPC component** that allows communication between **instances in your VPC and the internet**.
+
+It performs two critical functions:
+- **Provides a target** in your VPC route tables for internet-routable traffic.
+- **Performs network address translation (NAT)** for instances that have been assigned public IPv4 addresses.
+
+---
+
+## Key Features
+
+- Fully managed and scalable by AWS.
+- Enables inbound and outbound access to/from the internet.
+- One IGW per VPC.
+- Does not cause availability risks or bandwidth constraints.
+
+## Diagram (Conceptual)
+
+
+example image: 
+
+![alt text](./assests/practical_62.png)
+
+
+
+Day 63: How to access the private ec2 instance with public instance?
+
+Dat-64: What is VPC NAT GATEWAY?
+A **NAT (Network Address Translation) Gateway** enables **instances in a private subnet** to **connect to the internet** or other AWS services, but **prevents the internet from initiating connections** with those instances.
+  
+![alt text](./assests/NAT_GATEWAY.png)
+
+
+
+# Day 65:  VPC Peering in AWS
+
+VPC peering is a networkinng connection between two virtual private clouds that enable traffic to route privately using IPV4 or IPV6 addresses without using:
+
+- Internet Gateway 
+- NAT Gateway
+- VPN
+- AWS Direct Connect
+![alt text](./assests/vpc_peering.png)
+
+Day-66 : Summary of VPC from part-1 to part-7
+
+
+1> **Definition**: A Virtual Private Cloud is a virtual network dedicated to your AWS account within the AWS cloud. It Provide a logically isoltated environment for your aws resource.
+
+**Configruation**:  
+-VPC are created with specified range of IP address using CIDR  block notation.
+- AWS support IPC4 CIDR bolc between /16 and /28 netmask.
+- You can add up to 5 CIDR range within single VPC .
+
+**Maximux VPCs per range:** Default limit is 5 region . but his can be increase upon request.
 
 
 
 
+2> **Subnet** : A subnet is segmentation portion of VPC's IP address range. allowing for organized allocation of IP address.
+-**Configruation** : Subnet's are created within AZs.
+- **Subnet per VPC** - Default limit 200
+
+3. Public Subnet : Subnet that's accessible from the internet.
+Usage: Typicallyt for web server and load balancer.
+Point to considr: requries an intenet gateway for internet access.
 
 
+4. Private Subnet: Subnet not accessible from the **internet**. Ideal for sensitive server like database.
+- point to remembert: Require a NAT  gateway for outbound internet access.
 
 
+5. **Internet Gatway**:  it is used to connect AWS VPC to the internet.
+Configuration: Attached to VPC and routes traffic to from the internet.
 
+- Point to consider: Public IP is necessary for resources in the public subnet to communication with the internet.
+
+
+6. NAT gateway: enables instance in a private subnet to access the internet for update and download.
+
+Configuration : Place in public subnet with an elastic IP address.
+
+ -Point to consider: No inbound traffic allowed to private subnet through NAT.
+- Each NAT  GATEWAY supports up to 55000 simultaneorus connection.
+- Bandwidth up to 45 GBPS, depending on the instance type.
+
+
+7. Route tables: COntrol where network traffic is directed.
+Configraution : 
+- main route table - automatically  create, managed default routing for all subnet.
+ - custom Routes tables _ created manaullt for specific routing needs.
+ Point for to consider: Define rules to determin network traffic direction.
+
+
+ Route tables per VPC : default limit is 200.
+
+ Routes per Route table- 50
