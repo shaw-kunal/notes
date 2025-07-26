@@ -842,7 +842,7 @@ VPC peering is a networkinng connection between two virtual private clouds that 
 - AWS Direct Connect
 ![alt text](./assests/vpc_peering.png)
 
-Day-66 : Summary of VPC from part-1 to part-7
+# Day-66 : Summary of VPC from part-1 to part-7
 
 
 1> **Definition**: A Virtual Private Cloud is a virtual network dedicated to your AWS account within the AWS cloud. It Provide a logically isoltated environment for your aws resource.
@@ -895,3 +895,65 @@ Configraution :
  Route tables per VPC : default limit is 200.
 
  Routes per Route table- 50
+
+
+
+ # Days-67: AWS Network Access Control List(ACL)| What is NACL.
+
+ Definition : A network access control list(NACL) in AWS is a firewall that controls inbound and outbound at the subnet level in a Virtaul Private Cloud(VPC).
+
+
+Key points:
+- Stateless : Responses myst be explicitly allowd by rules.
+- Applies to subnet , no individual instance.
+- Container numbered rules( from 1 - 32766) that are evaluated in order.
+
+- Rules speicify ALLOW or DENY for traffic based on
+   - Protocol
+   - Port range
+   - Source/ Destination IP
+
+
+Difference from Security Groups:
+
+| Feature         | NACL                    | Security Group               |
+| --------------- | ----------------------- | ---------------------------- |
+| Level           | Subnet-level            | Instance-level               |
+| Stateful?       | No (stateless)          | Yes (stateful)               |
+| Rule type       | Allow & Deny            | Allow only                   |
+| Rule evaluation | In order (lowest first) | All rules evaluated together |
+
+
+ ![alt text](image.png)
+
+
+
+
+# Day: 68- Compairsion between NACL and Security Group
+  
+## Security Group:
+- Assigned to the instance , load balancer etc. It is like security of office with in building
+- Simultaneously apply all the rules
+- you can set only allow rule.
+- Stateful
+## Netwrok Acess control list(NACL)
+- Assigned to subnet and apply to all instance with in that subnet. It is like security of whole building.
+- Based on roll number. Lower the roll number greater the priority.
+- We can select allow and denyy rule.
+- stateless
+
+
+# Day-69 AWS: Stateful vs Stateless (Security Group vs NACL)
+
+Let's understand with a scenario:
+
+When  request is intiated by the interet  then inbound rule should be allow in both condition.
+
+![alt text](./assests/69_1.png)
+
+
+When request is initiated by the EC2 then
+- in Stateless firewall, inbound and outbound both should allow explicitly.
+- But in case of Statefull firewall, there is not need to inbound rule for that reponse of request from EC2.
+
+![alt text](./assests/69_2.png)
