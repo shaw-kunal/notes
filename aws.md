@@ -24,7 +24,7 @@ There are 3 main types:
 ## Types of Cloud
 
 1. Private Cloud: Exclusively by one buisness or Organization.
-2. Public Cloud: The cloud resources (like servers and storage) are ownder and operated by a third party cloud service Provider and delivered over the internet.
+2. Public Cloud: The cloud resources (like servers and storage) are owned and operated by a third party cloud service Provider and delivered over the internet.
 3. Hybrid Cloud: Often call 'the best of both worlds' hybird cloud combine on-premises infrastructure clouds so organisationn can reap the advantage of both.
 
 ## Service of Cloud
@@ -166,10 +166,10 @@ An EC2 Security Group acts as a virtual firewall for your EC2 instances to contr
     - CIDR block (e.g., 0.0.0.0/0)
     - Another security group
 
-# why security group is statefulAn EC2 Security Group is called stateful because:
-
+# why security group is stateful
+ An EC2 Security Group is called stateful because:-
 If you allow inbound traffic, the response traffic is automatically allowed—without needing an explicit outbound rule, and vice versa.
-
+( need to verfiy about - allowing  inbound or outbound)
 
 
 #  aws User Data Script: day 24
@@ -215,10 +215,11 @@ We know every time when we restart the instance then new IP address assign. But 
 
 # what is instance Store? day:34
 
-In AWS, Instance Store is temporary block-level storage physically attached to the host machine. Here's a quick breakdown:
-Also called ephemeral storage.
-Provides high-speed, low-latency storage.
-Data is lost when the instance stops, terminates, or fails.
+In AWS, Instance Store is temporary block-level storage physically attached to the host machine. Here's a quick breakdown:;
+
+- Also called ephemeral storage.
+- Provides high-speed, low-latency storage.
+- Data is lost when the instance stops, terminates, or fails.
 
 ## what is Elastic Block Storage (EBS)?
 
@@ -381,7 +382,7 @@ aws ec2 enable-fast-snapshot-restores \
 
 ## 🔹 What is EBS Lifecycle Manager (DLM)?
 
-[EBS Lifecycle Manager](w) is an AWS feature that **automates the creation, retention, and deletion of Amazon EBS snapshots**. It helps enforce backup policies without manual intervention.
+[EBS Lifecycle Manager](#) is an AWS feature that **automates the creation, retention, and deletion of Amazon EBS snapshots**. It helps enforce backup policies without manual intervention.
 
 ---
 
@@ -465,12 +466,12 @@ Storage Class
   - One Zone: stores data redundancy within a single AZ.
 
 LifeCycle Management- 
-   - Transition into IA - It will keep our cold data  in infrequent access and give you. 
+   - Transition into IA(infrequent access) - It will keep our cold data  in infrequent access and give you. 
    - Transition out ot IA - if you access your data then automatically keep that in standard storage.
 
 
 ## Performance Setting:
- Through Mode- How much data you can store in your strage. 
+ Through Mode- How much data you can store in your storage. 
  Enhanced-
  Burstinng - if you store 1 GiB data then performance will be 1kiB that means how much data you store that much performance is you get.
 
@@ -490,10 +491,10 @@ LifeCycle Management-
    - Amazon ECS
    - EKS
   - On premises
-  > The services is designed to support various workloads , such as 
-    - Amazon fsx for NetApp ONTAP.
-    - amazon fsx for openzf.
-    - amazon fsx for windows file server.
+  > The services is designed to support various workloads , such as \
+    - Amazon fsx for NetApp ONTAP.\
+    - amazon fsx for openzf. \
+    - amazon fsx for windows file server.\
     - amazon fsx for lustre
 
 ## amazon fsx Benefits;
@@ -510,11 +511,11 @@ LifeCycle Management-
  - Backup and disaster recovery
 
 # What is NetApp ONTAP?
-1. NetApp is MNC company known for its data management storage,formallt known as netwok appliance.
-2.Netapp provides know for NAS(Network attached stroage) product and services and holding a resputation for reliabilty and services.\
+1. NetApp is MNC company known for its data management storage, formar known as netwok appliance.
+2. Netapp provides know for NAS(Network attached stroage) product and services and holding a resputation for reliabilty and services.
 3. NetApp provides these data management services.
   - Data Storage
-  - Data Protectionj
+  - Data Protection
   - Data Management
   - Data Sharing
 
@@ -957,3 +958,189 @@ When request is initiated by the EC2 then
 - But in case of Statefull firewall, there is not need to inbound rule for that reponse of request from EC2.
 
 ![alt text](./assests/69_2.png)
+
+
+# What is Site to Site VPN (Day -70)
+![alt text](./assests/site-to-site.png)
+
+A site to site VPN is a type of virtual private network  that securely connect entire network over the internet. Instead of connecting individual users , it links one network to another allowing devices to communicate 
+
+# Day- 71 practical;
+
+# AWS DIRECT CONNECT  - Day 72
+
+- AWS direct connect is a cloud service solution that makes it easy to eastablish a dedicated network connection
+- AWS direct connect is network service that provide an alternative to using the internet to connect customer on premise sites to aws.
+- using AWS  direct connect , you can establish private connectivity  between aws and your datacenter, office, colocation  environment which is many cases can reduces your network cost , increase  bankwidth through put and provide a more consistent network experience than internet based connection
+
+
+# WHAT IS AWS TRANSIT GATEWAY?  DAY-73
+
+Transit gateway is a central networkig hub in AWS.
+It allow you to connect
+ - VPCs(Virtual Private Clouds)
+ - On premises network (via Transit GATEWAY PEERING)
+ - Other AWS region (via Transit Gateway peering)
+
+Think of it like a router in the cloud that simplifies complex networking.
+
+why use it:
+Without TGW:
+If you have 10 VPCs, you’d need 45 VPC peering connections (mesh).
+
+![alt text](./assests/withoutTGW.png)
+
+With TGW:
+All VPCs connect to one hub.
+Easy to manage, fewer connections.
+![alt text](./assests/withTGW.png)
+
+
+# VPC endpoints:  day - 75  
+
+VPC Endpoint enables you to privately connect your VPC to supported AWS  services and vpc endpoint services powdered by Private Link without requiring
+- Internet Gateway
+- NAT device
+- VPN connection
+- aws direct connect connections
+
+
+Endpoints are virtual devices. They are horizontally scaled, redundant and highly available VPC components that allow communication between  intances in you vpc
+ and services without imposing avaibility risks or bandwidth constrainsts on your network traffic.
+
+### Before using VPC Endpoints 
+Your EC2 in private subnet need to connect to s3/DynamoDB.
+since private subnet has no internet gateway , you must use:
+- NAT gateway (extra cost) or
+- Public IP + internet gateway
+
+Traffic leaves your VPC and goes over the public internet -> less secure , higher cose
+
+![alt text](./assests/beforeVPCEndpoints.png)
+
+
+# After using vpc Endpoints
+- You create a VPC endpoints (gateway or interface)
+- Now you EC2 -> DynamoDB Traffic stays inside AWS Private Network
+- No Internet GATEWAY ,no NAT gateway needed
+- More secure , chaaper , lower latency
+![alt text](./assests/afterVPCendpoints.png)
+
+
+## AWS PRIVATE LINK:
+AWS Private link simplifies the security of data shared with cloud based application by eliminating the exposure of data to the public internet.
+
+Aws private link provides private connectivity between VPCs, AWS services and on-premises application , securely on amazon network.
+
+
+## Type of VPC Endpoint:
+
+1. *GateWay Endpoints* - A gateway endpoint is for supported AWS services only. Your specify a gateway endpoint as route table target for traffci destined to the following AWS services
+1. Amazon S3
+2. DynamoDB
+
+2. *Interface endpoint* - An interface endpoint is an elastic network interface with a private IP address from the IP address range of your subnet. It serve as an entry point for the traffic destined to a supported AWS services or a VPC endpoint service.Interface endpoint powered by AWS private link.
+
+3. *Gateway loadbalancer endpoints*:  ( cover later) 
+
+# Day - 76 : AWS VPC ENDPOINTS SERVICES 
+
+scenario: let we have two VPC in same region, but in different account one for client and other for service provider.   
+ 
+Now if client want to avial only a particular service from service provider and as both are in same region then it can use the private link instead of  internet.
+
+A VPC(virtual private cloud) endpoint service is like a special doorway that allow you to connect to certain online service in a secure and private way.Instead of going through the  internet.
+
+Endpoint services require either a Network Load Balancer or a gateway load balancer.
+
+consideration:
+- An endpoint services is available in the region where you created it.
+- You can access the endpoints services from other region using peering
+- An endpoint servies support traffic only over TCP.
+
+## before using the endpoint services:
+![alt text](./assests/before_endpoints_services.png)
+
+## after using the endpoint services:
+![alt text](./assests/after_endpoints_services.png)
+
+
+# Day -77: What is AWS DHCP Options sets
+In AWS VPC, DHCP(Dynamic Host Configuration Protocol) options set is a configuration resource used to assign default network settings to instances in the VPC.
+It lets you control:
+- Domain name (eg: example.com)
+- Domain name server(DNS) - usually amazonprodidedDNS or custom servers
+- NTP server - for time sync
+- NetBios name servers & node type - for windos
+
+By default , each vpc has a default DHCP options set.
+You can create a custom DHCP options set and associated it with a VPC.
+
+
+
+# Day-78: What is AWS vpc flow log?
+
+- Capture IP traffic info for VPC, Subnet, or ENI.  
+- Store logs in **CloudWatch** or **S3**.  
+- Record: source/destination IP, port, protocol, action (ACCEPT/REJECT).  
+- Use cases: troubleshoot, monitor security, compliance.  
+- Limitation: no packet payloads.  
+
+# Day-79: What is Customer Manager Prefix List ?
+
+## Definition
+A **Customer-Managed Prefix List** is a collection of CIDR blocks (IP ranges) that you create and manage in AWS.
+
+## Key Features
+- **Customizable**: You define the CIDR blocks.
+- **Reusable**: Reference across Security Groups, NACLs, and Route Tables.
+- **Centralized Control**: Update once, reflects everywhere.
+- **Integration**: Works with Security Groups, NACLs, Route Tables.
+
+## Benefits
+- Reduces repetition of CIDR entries.
+- Simplifies management of IP ranges.
+- Ensures consistency across resources.
+
+## Types of Prefix Lists
+- **Customer-Managed**: Created and controlled by you.
+- **AWS-Managed**: Provided by AWS for services like S3, CloudFront, etc.
+
+## Example
+- Create prefix list **TrustedNetworks** with:
+  - `203.0.113.0/24` (Corporate network)
+  - `198.51.100.0/24` (Partner network)  
+- Reference *TrustedNetworks* in Security Groups.  
+- Updating the prefix list updates all linked resources.
+
+
+# Day-80: AWS Manager prefix-list:
+
+## Definition
+An **AWS-Managed Prefix List** is a collection of CIDR blocks for AWS services, created and maintained by AWS.  
+You can reference these lists in your **Security Groups**, **NACLs**, and **Route Tables**.
+
+## Key Features
+- **Managed by AWS**: You cannot modify the CIDRs; AWS updates them automatically.
+- **Reliable**: Always up to date with the latest service IP ranges.
+- **Reusable**: Use the same prefix list across multiple VPC resources.
+- **Integration**: Works with Security Groups, Network ACLs, and Route Tables.
+
+## Benefits
+- No need to manually track changing IP ranges for AWS services.
+- Simplifies rules when allowing access to AWS services (e.g., S3, DynamoDB).
+- Reduces configuration errors.
+
+## Example
+- Use the **S3 AWS-Managed Prefix List** in a Route Table to allow VPC traffic to Amazon S3.  
+- AWS updates the list if S3’s IP ranges change — no manual action required.
+
+---
+
+# DAY-81: AWS ROUTE 53 | DNS SERVERS
+
+8336051413
+
+
+
+
