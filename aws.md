@@ -773,9 +773,8 @@ CIDR block issue:  we can not assign same CIDR block in other VPC.
 solution -1 : Edit VPC and add a new IP4 CIDR and use it.
 limitation: But we can add atmost 5 CIDR block.
 
-solution - 2 : 
+solution - 2 : We need to  generate the subnet for for Private IP block.
 
-We need to  generate the subnet for for Private IP block.
 Eg:- we need to two different ip block then.
 we have a CIDR block: 192.168.0.0/24
 
@@ -790,7 +789,7 @@ we need two subnet then
 public Subnet: A subnet that has a route to the internet gateway , allowinng resources inside it to send receive traffic from te internet directly.
 
 
-Private Subnet: A subnet that does not have a route to te internet GateWay. Resources in it can only access the internet through a NAT Gte or Basiton host and are not Directlyyy accessible from thhe internet.
+Private Subnet: A subnet that does not have a route to te internet GateWay. Resources in it can only access the internet through a NAT Gte or Basiton host and are not Directly accessible from thhe internet.
 
 ![alt text](./assests/public_private_subnet.png)
 
@@ -824,9 +823,10 @@ example image:
 
 
 
-Day 63: How to access the private ec2 instance with public instance?
+# Day 63: How to access the private ec2 instance with public instance?
+practical done
 
-Dat-64: What is VPC NAT GATEWAY?
+# Dat-64: What is VPC NAT GATEWAY?
 A **NAT (Network Address Translation) Gateway** enables **instances in a private subnet** to **connect to the internet** or other AWS services, but **prevents the internet from initiating connections** with those instances.
   
 ![alt text](./assests/NAT_GATEWAY.png)
@@ -841,6 +841,7 @@ VPC peering is a networkinng connection between two virtual private clouds that 
 - NAT Gateway
 - VPN
 - AWS Direct Connect
+
 ![alt text](./assests/vpc_peering.png)
 
 # Day-66 : Summary of VPC from part-1 to part-7
@@ -849,8 +850,8 @@ VPC peering is a networkinng connection between two virtual private clouds that 
 1> **Definition**: A Virtual Private Cloud is a virtual network dedicated to your AWS account within the AWS cloud. It Provide a logically isoltated environment for your aws resource.
 
 **Configruation**:  
--VPC are created with specified range of IP address using CIDR  block notation.
-- AWS support IPC4 CIDR bolc between /16 and /28 netmask.
+- VPC are created with specified range of IP address using CIDR  block notation.
+- AWS support IPv4 CIDR bolc between /16 and /28 netmask.
 - You can add up to 5 CIDR range within single VPC .
 
 **Maximux VPCs per range:** Default limit is 5 region . but his can be increase upon request.
@@ -858,39 +859,42 @@ VPC peering is a networkinng connection between two virtual private clouds that 
 
 
 
-2> **Subnet** : A subnet is segmentation portion of VPC's IP address range. allowing for organized allocation of IP address.
--**Configruation** : Subnet's are created within AZs.
+2. **Subnet** : A subnet is segmentation portion of VPC's IP address range. allowing for organized allocation of IP address.
+
+- **Configruation** : Subnet's are created within AZs.
 - **Subnet per VPC** - Default limit 200
 
 3. Public Subnet : Subnet that's accessible from the internet.
 Usage: Typicallyt for web server and load balancer.
-Point to considr: requries an intenet gateway for internet access.
+
+- Point to consider: requries an intenet gateway for internet access.
 
 
 4. Private Subnet: Subnet not accessible from the **internet**. Ideal for sensitive server like database.
-- point to remembert: Require a NAT  gateway for outbound internet access.
+
+ - point to remember: Require a NAT  gateway for outbound internet access.
 
 
 5. **Internet Gatway**:  it is used to connect AWS VPC to the internet.
 Configuration: Attached to VPC and routes traffic to from the internet.
 
-- Point to consider: Public IP is necessary for resources in the public subnet to communication with the internet.
+ - Point to consider: Public IP is necessary for resources in the public subnet to communication with the internet.
 
 
 6. NAT gateway: enables instance in a private subnet to access the internet for update and download.
 
 Configuration : Place in public subnet with an elastic IP address.
 
- -Point to consider: No inbound traffic allowed to private subnet through NAT.
+- Point to consider: No inbound traffic allowed to private subnet through NAT.
 - Each NAT  GATEWAY supports up to 55000 simultaneorus connection.
 - Bandwidth up to 45 GBPS, depending on the instance type.
 
 
-7. Route tables: COntrol where network traffic is directed.
+7. Route tables: Control where network traffic is directed.
 Configraution : 
-- main route table - automatically  create, managed default routing for all subnet.
- - custom Routes tables _ created manaullt for specific routing needs.
- Point for to consider: Define rules to determin network traffic direction.
+ - main route table - automatically  create, managed default routing for all subnet.
+ - custom Routes tables - created default for specific routing needs.
+ - Point for to consider: Define rules to determine network traffic direction.
 
 
  Route tables per VPC : default limit is 200.
@@ -1141,6 +1145,171 @@ You can reference these lists in your **Security Groups**, **NACLs**, and **Rout
 
 8336051413
 
+![alt text](./assests/dns_resolver.png)
+
+A DNS resolver is like a phonebook helper:
+1. When you type website name(eg: fackbook.com)
+2. It is goes to DNS resolver (ISP provided DNS server)
+3. if DNS resolver does not able resolve it , It ask other DNS servers step by step.
+4. First it goes to root DNS server where it will check TLD(top level domain) and redirect the request to their specific TLD server.
+5. now it will redirect the request to Dns authoritative server. Finally , it get the correct IP addres
+5. it return that ip to you computer so it can connect.
+
+# DAY-82: HOW to register you domain in route 53:
+ 
+ practical done
+
+ ---
+
+ # DAY-83: Record type | Rout 53
+
+
+In **AWS Route 53**, a *record type* defines the kind of DNS record you want to create. Each record type serves a different purpose in routing traffic. Common ones are:
+
+* **A (Address record)** → Maps a domain name (e.g., `example.com`) to an IPv4 address (e.g., `192.0.2.1`).
+* **AAAA** → Same as A, but for IPv6 addresses.
+* **CNAME (Canonical Name)** → Points one domain to another domain name (e.g., `www.example.com` → `example.com`).
+* **MX (Mail Exchange)** → Routes emails to mail servers for your domain.
+* **TXT** → Stores text data, often for verification (e.g., Google site verification, SPF records for email).
+* **NS (Name Server)** → Specifies the authoritative name servers for a hosted zone.
+* **PTR (Pointer)** → Used for reverse DNS lookups.
+* **SRV (Service Locator)** → Defines the location of specific services (rarely used).
+* **CAA (Certificate Authority Authorization)** → Restricts which certificate authorities can issue SSL/TLS certs for your domain.
+* **Alias Record (Route 53 special type)** → Similar to CNAME but at the root domain level (e.g., `example.com → CloudFront/ELB/S3`). 
+
+
+---
+
+# DAY- 84: Routing Policy | weighted routing policy (IMPORTANT)
+Here’s a clear note on **Weighted Routing Policy in AWS Route 53** with an example:
+
+---
+
+### **Weighted Routing Policy (Route 53)**
+
+* A **Weighted Routing Policy** lets you distribute traffic across multiple resources (like EC2 instances, load balancers, or S3 static sites) in **proportion to assigned weights**.
+* You can control **what percentage of traffic** should go to each resource.
+### **Example**
+
+Suppose you have two EC2 instances hosting your website:
+
+1. **Instance A** → Weight = 70
+2. **Instance B** → Weight = 30
+
+Total weight = 70 + 30 = **100**
+
+* 70% of requests will go to **Instance A**.
+* 30% of requests will go to **Instance B**.
+
+👉 If you later want to test a new app version on Instance B, you could start with `Weight = 10` for B and `Weight = 90` for A, then gradually increase B’s weight.
+
+---
+
+### **Use Case**
+
+* Deploying a new app version safely (send 10% traffic to the new instance, 90% to stable one).
+* Testing infrastructure changes (e.g., new region setup).
+* Custom traffic distribution without an ELB.
+
+
+# DAY - 85: HOW TO SETUP AWS ROUTE 53 health check? | weighted routing policy
+
+Practical -done
+
+Health check up is used to redirect the request to webserver that are working so that i always show high avaiblity
+
+# Day- 86 : How Geolocation Routing Policy Works?
+
+* It sends users to different servers **based on their physical location**.
+* Example:
+
+  * If a user is in **India**, Route 53 can send them to your India server.
+  * If a user is in the **US**, it sends them to the US server.
+* You can also set a **default server** for users from places you didn’t specify.
+
+👉 Think of it as: *“Where is the user coming from? Okay, send them to the nearest/right server for that place.”*
+
+
+
+
+# Day: 87 - latency based routing policy? | AWS route 53
+
+It send users to the server that gives them the lowest network delay( fastest response) , not just the closest by location
+
+Example: A user in indida might get lower latency from a singapore server than from a Mumbai one ->  Route 53 will send them to singapore.
+
+Goal = Better speed and user experience 
+
+so: 
+Geolocation = Where the user is
+Latency based = Which server is fastest right now
+
+
+#  Day 88| What is Geoproximity Routing policy in Route 53 ? 
+
+
+* It routes users based on **how close they are to your resources** (AWS regions or even non-AWS servers).
+* You can also **shift traffic** by using a **bias** (e.g., 70% traffic to US-East, 30% to Europe, even if some users are closer to Europe).
+* Requires a **Route 53 Traffic Flow policy** (can’t set it directly like simple/geolocation).
+
+👉 Think of it like:
+
+* **Geolocation** = fixed country/continent mapping.
+* **Geoproximity** = dynamic “closer region gets the traffic,” but you can adjust with bias to control flow.
+
+
+# DAY-89: How Failover Routing policy work in Route 53?
+
+
+* **Failover Routing Policy** in Route 53 = used for **active-passive setup**.
+* You create **two records**:
+
+  * **Primary (Active)** → main server.
+  * **Secondary (Passive)** → backup server.
+* Route 53 does a **health check** on the Primary.
+* If Primary is **healthy** → traffic goes to Primary.
+* If Primary **fails** → traffic automatically shifts to Secondary.
+* When Primary recovers → traffic goes back to Primary.
+
+👉 Purpose: **High availability and disaster recovery**.
+
+---
+
+# DAY-90: Multivalue Answer Routing Policy in Route 53 ?
+
+
+* It lets you return **multiple IP addresses/records** for a single DNS query.
+* Route 53 can attach a **health check** to each record.
+* Only **healthy records** are returned to the user.
+* Helps with **basic load balancing** (not as advanced as ELB).
+* Max **8 healthy records** are returned in response.
+
+👉 Use it when you want to **distribute traffic** across multiple servers and improve **availability**.
+
+---
+# DAY-91:IP based routin Routing Policy | Route 53
+
+Route53 resolve IP based on source IP.
+let we have three web server 
+webserver1- 1.1.1.1
+webserver2- 2.2.2.2
+webserver3- 3.3.3.3
+
+now if someone from Gujarat make request then we can make sure it always goes to websever 1
+
+now if someone from Mumbai make request then we can make sure it always goes to websever 2
+
+others will go in  webserver3
+
+![alt text](image.png)
+Step of create:
+1. CIDR collection-> create CIDR block  
+3. Create Hosted Zone-> IP based policy
+
+
+---
+
+# DAY-92: Aws load balancer | What is AWS load balancer?
 
 
 
