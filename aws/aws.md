@@ -799,7 +799,7 @@ Private Subnet: A subnet that does not have a route to te internet GateWay. Reso
 
 
 ## What is an Internet Gateway?
-An **Internet Gateway (IGW)** is a horizontally scaled, redundant, and highly available **VPC component** that allows communication between **instances in your VPC and the internet**.
+An **Internet Gateway (IGW)** is highly available **VPC component** that allows communication between **instances in your VPC and the internet**.
 
 It performs two critical functions:
 - **Provides a target** in your VPC route tables for internet-routable traffic.
@@ -851,10 +851,10 @@ VPC peering is a networkinng connection between two virtual private clouds that 
 
 **Configruation**:  
 - VPC are created with specified range of IP address using CIDR  block notation.
-- AWS support IPv4 CIDR bolc between /16 and /28 netmask.
+- AWS support IPv4 CIDR bolck between /16 and /28 netmask.
 - You can add up to 5 CIDR range within single VPC .
 
-**Maximux VPCs per range:** Default limit is 5 region . but his can be increase upon request.
+**Maximux VPCs per range:** Default limit is 5 region . but this can be increase upon request.
 
 
 
@@ -909,7 +909,7 @@ Configraution :
 
 
 Key points:
-- Stateless : Responses myst be explicitly allowd by rules.
+- Stateless : Responses must be explicitly allowd by rules.
 - Applies to subnet , no individual instance.
 - Container numbered rules( from 1 - 32766) that are evaluated in order.
 
@@ -929,7 +929,7 @@ Difference from Security Groups:
 | Rule evaluation | In order (lowest first) | All rules evaluated together |
 
 
- ![alt text](image.png)
+ ![alt text](./assests/nacl.png)
 
 
 
@@ -1311,5 +1311,162 @@ Step of create:
 
 # DAY-92: Aws load balancer | What is AWS load balancer?
 
+AWS Load balancer is a serveice that distribute incoming traffic across multiple servers (EC2, container, lambda ,etc) so that 
+- No single server is overloaded
+- Application stay highly avilable and scalable.
+- If one server fails, traffic is automatically sent to helthy ones.
 
+## Type of AWS load balancer 
+1. Application load Balancer (ALB) 
+2. Netowork load balancer (NLB)
+3. Gateway load balancer (GWLB)z  
+4. Classic load balancer(CLB)
+
+
+# Day -93: AWS Load balanver t erminology | How load balancer work?
+
+# 94-95-96:Pricatical of Application Load balancer.
+
+Practical Important
+
+![alt text](./assests/application_load_balancer.png)
+
+# Day-97:  Application Load Balancer Routing Policy
+
+## Path Based Routing Policy:
+
+Routes traffic based on the URL path. 
+Eg: example.com/images and example.com/orders
+
+![alt text](./assests/path_based_routing_policy.png)
+
+## Host based Routing Policy:
+
+Routes traffic based on domain name in the request.
+Eg- images.example.com  , orders.example.com
+![alt text](./assests/host-based-routing-policy.png)
+
+| Aspect              | Path-Based Routing                                                                 | Host-Based Routing                                                                 |
+|---------------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| **DNS Configuration** | Points DNS to the ALB. No specific DNS setup for individual paths.                 | Requires DNS record for each domain or subdomain to point to the ALB.              |
+| **Use Case**          | Used for routing to different applications or servers under the same domain.       | Ideal for routing to different applications or services based on domain/subdomain. |
+| **SSL/TLS Certificate** | A single certificate can cover all paths under a domain.                           | May require multiple certificates if different domains are used.                   |
+| **Flexibility**       | Limited to routing within a single domain.                                         | More complex due to managing multiple DNS entries and SSL certificates.            |
+
+
+
+# Day-98: Practical of path based routing plolicy| Application load balancer
+
+done
+
+
+# Day-99: practical of host based routing | application load balancer
+
+practical done
+
+# Day-100: AWS Network Load Balancer | NLB | ALB Vs NLB 
+
+- Network load balanver are best suited for load balancing of TCP traffic where extreme performance is required
+- Operating at connection level (layer -4)
+-  Network load balancer are capable of handling millions of request per seonds , while maintainting ultra low letencies
+
+
+## Application Load balancer v/s Network load balancer
+           
+## Application Load Balancer vs Network Load Balancer
+
+| Aspect                  | Application Load Balancer                                                                 | Network Load Balancer                        |
+|-------------------------|--------------------------------------------------------------------------------------------|----------------------------------------------|
+| **Supported Protocol**  | HTTP, HTTPS                                                                                | TCP, UDP                                     |
+| **Sticky Session**      | Supported                                                                                  | Supported                                    |
+| **Idle Connection Timeout** | When your web browser makes a TCP connection to an ELB, the connection is used for the request/response and then remains open for a short time for reuse. This time period is known as the idle timeout (**Yes**) | Not applicable (**No**) |
+| **Path & Host Based Routing** | Yes                                                                                   | No                                           |
+| **Static IP**           | No                                                                                         | Yes                                          |
+
+
+
+# Day-101: AWS Network Load Balancer Practical 
+
+done
+
+
+# DAY-102: Day 102 | What Is AWS Cross-Zone Load Balancing? 
+
+ When Cross-zone load balancing is Disable
+![alt text](./assests/cross_zone_load_balancing_disable.png)
+
+When Cross-zone load balancing is enable:
+
+![alt text](./assests/cross_zone_lb_enable.png)
+
+Feature that allows a load balancer to distribute traffic evenly across all target in all avaiblity Zones(AZs), not just within the AZ of the incoming request.
+
+Supported by - Application load balancer(ALB) and Network load balancer (NLB)
+Advantage: Prevent uneven load if some AZs have fewer target
+Improvement fault tolreancer and resource utilization
+Considration: With application balancer , cross zone load balancng is always enabled.
+
+With Network Load balancer and gatewway load balancer cross-zone load balancing is disables by default. After you create a NLB , you can enable and disable it
+
+
+# DAY-103: AWS gateway load balancer  | 
+
+It is a layer 3(network layer) service
+
+GWLB is a service designed to help you deploy ,scale and manage virtual appliances such 
+- Firewalls
+- Intrusion Detection System
+- Intrusion Prevention system
+
+
+It distributes traffic across multiple instance ,performance health check and supports equal-cost Multi path routing(ECMP) for high avainlity and throughput.
+
+GWLB simplifies the deployment and management of network appliances in AWS, making it easier to enhances security and networking in the route.
+
+![alt text](./assests/GWLB.png)
+
+
+# DAY-104: What is AWS VPC ingress routing? 
+
+1st case: In tradition on premise infrasture
+
+here NGFW inspects the traffic , that it is not comming from any black listed IP or not DOS attack
+
+![alt text](./assests/104_1.png)
+
+2nd case: Without VPC ingress Routing
+
+![alt text](./assests/104_2.png)
+
+3rd case: 
+it say  to internet gateway ,first redirect all the traffic to firewall and after inspection firewall send to server 
+![alt text](./assests/104_3.png)
+
+
+# DAY-105: What is AWS VPC ingress routing? 
+
+![alt text](./assests/105_1.png)
+
+
+## Note: Day-106 - 108 (video watch done but practical remaining )
+
+# Day-109: EC2 Classic V/S Amazon VPC
+
+EC2 Classic : 
+- Instance run in shared network.
+- All instance are assigned publich IP address by default and are directly reachable from the internet
+- Only Support inbound traffic rule. Assigned at instance launch
+- No support for creating subnets.
+- Limited Control over the network environment.
+- No native support for VPN connections.
+
+Amazon vpc:
+ - Provides a logically isoloated section of the AWS cloud.
+ - Customized IP address ranges. You can decided whether to provide public IP address or not
+ - Support for both inbound and outbound traffic rules.
+ - Can be changed after instance launch.
+ - Ablity to create and manage subnet
+
+- Enhanced control and flexiblity over the network enviorment.
+- Support VPN and Direct Connect to Integrate with existing IT Infrasture.
 
