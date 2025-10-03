@@ -29,17 +29,34 @@ We have seen , there are some limitation in aws managed policies
 
 
 
+# Day 125 || IAM Policies - Inline Policies |
 
 
- # Day 126 || IAM Entities - IAM Users 
+* **Inline Policy** = A policy that is directly attached **inside a single IAM user, group, or role**.
+* It **exists only with that identity** → if you delete the user/role, the policy is also deleted.
+* Unlike **managed policies** (which are reusable), inline policies are **one-to-one**.
+* Best for **custom, tightly-scoped permissions** that you don’t need to reuse elsewhere.
+* Inline policies do not have amazon resource name (ARN) 
 
-*introduction* - 
+use case:
+ - specific job needs
+ - Keep thing secure
+ - Short term projects
+ - Follow rules
+ - Easy to manage for certain case
 
-Username :unique identifier for the user, used in sing in
 
+# Day 126 || IAM Entities - IAM Users 
 
+*Introduction:* 
+- it is the core of access control in AWS. They define who can access resources.
 
- # Day 127 || IAM Entities - IAM Group 
+### IAM USER
+ - An individual entity human user who needs access to AWS access
+ - User are used to directly interact with AWS services and resources.
+
+ 
+# Day 127 || IAM Entities - IAM Group 
 
 *Introduction*
 - it is collection of IAM usesrs for easier permission management
@@ -354,3 +371,76 @@ AWS Identity and access management (IAM) for web identity/SAML 2.0 federation is
 
 
 ![alt text](./assests/131_1.png)
+
+
+# Day 132 || IAM Entities - IAM Roles Custom Trust Policy
+
+A **trust policy** in AWS IAM **defines who or what can assume a role**.
+
+### 1. **Purpose**
+
+- Controls **who is allowed to “assume” the role**.
+- Works together with the **permissions policy**, which defines **what the role can do**.
+
+---
+
+### 2. **Components of a Trust Policy**
+
+| Component   | Meaning                                                         |
+| ----------- | --------------------------------------------------------------- |
+| `Effect`    | Allow or Deny the action (`Allow` usually)                      |
+| `Principal` | Who can assume the role (user, service, or account)             |
+| `Action`    | Always `sts:AssumeRole` for role assumption                     |
+| `Condition` | Optional restrictions (like only a specific EC2 instance or IP) |
+
+---
+
+### 3. **Basic Example**
+
+Allow EC2 service to assume a role:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "Service": "ec2.amazonaws.com" },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+---
+
+### 4. **Custom Condition Example**
+
+Allow only a **specific EC2 instance** to assume the role:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "Service": "ec2.amazonaws.com" },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceInstanceARN": "arn:aws:ec2:region:account-id:instance/instance-id"
+        }
+      }
+    }
+  ]
+}
+```
+
+---
+
+### 5. **Key Points**
+
+- Trust policy = **who can assume** the role.
+- Permissions policy = **what the role can do**.
+- Custom trust policies can restrict access using **conditions** (like IP, instance, or account).
+- Useful for **tight security control** when multiple entities need temporary access.
