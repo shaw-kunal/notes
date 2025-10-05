@@ -444,3 +444,34 @@ Allow only a **specific EC2 instance** to assume the role:
 - Permissions policy = **what the role can do**.
 - Custom trust policies can restrict access using **conditions** (like IP, instance, or account).
 - Useful for **tight security control** when multiple entities need temporary access.
+
+
+
+# Day 133-135 || IAM Root User Best Practices | PART-1,2,3
+
+1. Enabled Multiple-factor authentication (MFA)
+2. Never use the root user for everyday tasks
+
+ - To  perform certain task you need root-level permission  and task are-
+
+ Root-level (administrator/superuser) permissions are needed for tasks that modify system-level settings or files. Common examples include:
+
+- 1. **Installing or removing software** (e.g., `apt install`, `yum remove`)
+- 2. **Changing system configurations** (e.g., network, firewall, or kernel settings)
+  - 3. **Managing users and groups** (`useradd`, `passwd`, etc.)
+  - 4. **Accessing or modifying system files** (like `/etc/` or `/usr/bin/`)
+  - 5. **Starting, stopping, or configuring system services** (`systemctl start`, etc.)
+  - 6. **Mounting or unmounting drives**
+  - 7. **Changing file permissions or ownership for system directories**
+  - 8. **Updating or upgrading the OS**
+
+Avoid  using the root user for day-to-day tasks.
+for a single , standalong AWS account , create an administrative user account.
+
+3. Delete or Rotate access key
+4. Secure email address associated with the Root account
+5. Use Account Alises
+
+Pending 136 - 144
+
+Learn after some time
